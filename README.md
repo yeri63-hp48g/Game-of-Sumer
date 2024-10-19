@@ -16,4 +16,4 @@ Varying factors include the immigration of new people to the city (which is infl
 
 The program was written using FOCAL, and ran on a 4K PDP-8. I've ported this to run on something more modern and portable, ie. an HP-48GX calculator. This was a favorite game of mine back in 1980, during my Sophmore year in High School. We had to connect to the local Community College computer using accoustical phone modems and run on one of the DECwriter printers or VT100 green screen terminals on the left side of the classroom.
 
-I hope this brings back memories for any of you who played this in the past.
+A copy of the original FOCAL program (f0005.fc) and FOCAL Programming Manual are available if you want to port this over to another platform. I hope this brings back memories for any of you who played this in the past.
