@@ -1,0 +1,267 @@
+<<
+  0 RDZ
+  1 100 1000 2800
+  17 RAND 10 * FLOOR +
+
+  @ z = year of reign
+  @ p = population
+  @ a = acres of land
+  @ s = bushels in storage
+  @ y = yeild and rate
+  @ f = quantity of bushels to feed people
+  @ q = acres to buy/sell or bushels to feed/plant
+  @ k = key code input on HP48GX
+  @ m = error message number
+  @ c = chance of bad luck
+  @ d = people died of starvation
+  @ e = bushels eaten by rats
+  @ h = harvest in bushels
+  @ i = immigrants to the city
+  @ p1 = total people died during reign
+  @ l = peasants starved per year
+  @ m1 = own or lost land
+  @ m2 = ruler rating by peasants
+
+  0 0 0 0 0 0 0 0 0 0 0 0 0 -> 
+  z p a s y f q k m c d e h i p1 l m1 m2
+
+  <<
+    DO 
+       @ Display button menu.
+       { { "Buy" } 
+         { "Sell" } 
+         { "Feed" } 
+         { "Sow" } 
+         { }  
+         { "Quit" } } TMENU
+
+       @ Display status for current year.
+       CLLCD
+       " Sumer - Year " z + 1 DISP
+       " You have " p + " people," + 3 DISP
+       " " a + " acres, and " + s + 4 DISP
+       " bushels trading at" 5 DISP
+       " " y + " bushels/acre." + 6 DISP
+       7 FREEZE
+
+       @ Wait for user keypress to continue.
+       DO -1 WAIT
+         'k' STO
+         CASE 
+           'k==11.1' THEN 1 END
+           'k==12.1' THEN 2 END
+           'k==13.1' THEN 3 END
+           'k==14.1' THEN 4 END 
+           'k==16.1' THEN CLEAR 2.01 TMENU KILL END 
+           0
+         END
+
+         'q' STO
+       UNTIL 'q>0' END
+
+       @ Remove button menu from display.
+       { { } { } { } { } { } { } } TMENU
+
+       CASE
+         'q==1' THEN CLLCD 0
+                  "
+                    How many acres do
+                    you wish to buy?" " "
+                  INPUT OBJ-> 'q' STO CLEAR
+
+                  IF s q y * - DUP 0 <
+                    THEN 
+                      CLLCD 1 FREEZE
+                      "   You don't have
+                         enough bushels!" 3 DISP
+                      500 .1 BEEP 1.4 WAIT
+                    ELSE
+                      's' STO 'a+q' EVAL 'a' STO
+                  END
+                END
+
+         'q==2' THEN 0
+                  "
+                    How many acres do
+                    you want to sell?" " " 
+                  INPUT OBJ-> 'q' STO CLEAR
+
+                  IF a q - DUP 0 <
+                    THEN
+                      CLLCD 1 FREEZE
+                      "    You don't own
+                          enough acres!" 3 DISP
+                      500 .1 BEEP 1.4 WAIT
+                    ELSE
+                      'a' STO
+                      'q*y+s' EVAL 's' STO
+                  END
+                END
+
+         'q==3' THEN 0
+                  "
+                   How many bushels to 
+                   feed the peasants?" " "
+                  INPUT OBJ -> 'q' STO CLEAR
+ 
+                  IF s q - DUP 0 <
+                    THEN
+                      CCLCD
+                      "   You don't have 
+                         enjough bushels!" 3 DISP
+                      500 .1 BEEP 1.4 WAIT
+                    ELSE
+                      's' STO q 'f' STO
+                  END
+
+         'q==4' THEN 0
+                  "
+                   How many acres to 
+                   plant this year?" " " 
+                  INPUT OBJ -> 'q' STO CLEAR
+
+                  IF 'q>=10*p'
+                    THEN 3 'm' STO
+                  END
+
+                  IF 'FLOOR (q/2)s'
+                    THEN 2 'm' STO
+                  END
+
+                  IF 'q>a' 
+                    THEN 1 'm' STO
+                  END
+
+                  IF 'q>0'
+                    THEN CLLCD
+
+                    CASE 'm==1' THEN
+                                  "    You don't own
+                                     enough acres!" 3 DISP 
+                                  500 .1 BEEP 1.4 WAIT
+                                END
+
+                         'm==2' THEN
+                                  "    You don't have
+                                      enough bushels!" 3 DISP 
+                                  500 .1 BEEP 2.5 WAIT
+                                END
+
+                         'm==3' THEN
+                                  "  Not enough people
+                                    to tend the crops!" 3 DISP
+                                  500 .1 BEEP 1.4 WAIT
+                                END
+
+                         'm==0' THEN
+                                  's-FLOOR(q/2)' EVAL 's' STO
+
+                                  @ Calculate new harvest.
+                                  RAND 5 * CEIL q * 'h' STO
+
+                                  @ Were any bushels eaten by rats?
+                                  RAND 5 * CEIL 'c' STO                                      
+ 
+                                  IF 'FLOOR(c/2)== c/2' 
+                                    THEN 'FLOOR(s/c)' EVAL
+                                    ELSE 0
+                                  END
+
+                                  'e' STO
+
+                                  @ Update bushels in storage.
+                                  's+h-e' EVAL 's' STO
+
+                                  @ Did prosperity bring in new immigrants?
+                                  RAND 5 * CEIL 'c' STO
+                                  'FLOOR(c*(20*a+s)/p/100+1)' EVAL 'i' STO
+
+                                  @ Did anyone die of starvation?
+                                  'FLOOR(f/20)' EVAL 'c' STO
+                                  IF 'p/c'
+                                    THEN 0 'd' STO
+                                    ELSE 'p-c' EVAL 'd' STO
+
+                                    IF 'd>.45*p'
+                                      THEN 
+                                        CLLCD 1 FREEZE
+                                        " " d " starved, you're 
+                                                    impeached!" + + 3 DISP
+                                        500 .1 BEEP 2.4 WAIT 
+                                        CLEAR 2.01 TMENU KILL
+                                    END
+
+                                    @ Keep track of deaths during reign.
+                                    c 'p' STO
+                                    FLOOR(((z-1)*p1+d*100/p)/z)' EVAL 'p1' STO
+                                  END
+
+                                  'z' INCR
+
+                                  @ Update population with new immigrants.
+                                  'p+i' EVAL 'p' STO
+
+                                  @ Did a plague occur?
+                                  100 RAND * FLOOR 'c' STO
+                                  IF 'c<15'
+                                    THEN 
+                                      'FLOOR(p/2)' EVAL 'p' STO
+                                      CLLCD 1 FREEZE
+                                      "      A horrible
+                                          plague struck!" 3 DISP
+                                      500 .1 BEEP
+                                      2.4 WAIT
+                                  END
+
+                                  @ Generate next years trading rate.
+                                  17 RAND 10 * FLOOR + 'y' STO
+                                END
+ 
+                         0 'm' STO
+                    END
+                  END
+       END
+    UNTIL z 10 > 
+    END
+
+    'RND(a/p,0)' EVAL 'l' STO
+    'ABS(1000-a)' EVAL 'q' STO
+
+    @ Determine if any land was added or lost.
+    IF 'a>1000'
+      THEN "added"
+      ELSE "lost"
+    END 'm1' STO
+
+    @ Determine final score.
+    IF 'p1>33 OR l<7'
+      THEN " You're impeached!"
+      ELSE
+        IF 'p1>10 OR l<9'
+          THEN " Heavy handed!"
+          ELSE
+            IF 'p1>3 OR l<10'
+              THEN " Could be better!"
+              ELSE
+                IF 'p1<4 OR L>9'
+                  THEN " Fantastic job!"
+                END
+            END
+        END
+    END
+
+    @ Save final score as ruler.
+    'm2' STO
+
+    CLLCD
+    " Sumer 10 Years" 1 DISP
+    " " p1 " starved per year," + + 3 DISP
+    " " l " acres per person." + + 4 DISP
+    " You " m1 " " q " acres." + + + + 5 DISP 
+    m2 6 DISP 7 FREEZE 
+
+    @ Wait for keypress to continue.
+    -1 WAIT
+  >> 
+  CLEAR 2.01 TMENU KILL
+>>
