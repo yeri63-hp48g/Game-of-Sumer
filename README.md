@@ -1,4 +1,4 @@
-# Sumer
+# Game of Sumer
 
 ![Screenshot of Sumer](https://github.com/yeri63-hp48g/Sumer/raw/main/Sumer.png)
 
