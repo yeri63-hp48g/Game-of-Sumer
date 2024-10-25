@@ -2,7 +2,7 @@
 
 ![Screenshot of Sumer](https://github.com/yeri63-hp48g/Sumer/raw/main/Sumer.png)
 
-Here is a simulation program/game which ran on a minimal Digital Equipment PDP-8 system. The following description was taken from the 1973 DECUS Program Library Catalog.
+Here is a simulation program/game which ran on a minimal Digital Equipment PDP-8 system. The following description was taken from the 1973 DECUS Program Library Catalog. 
 
 Imagine that you are living in the city of Sumer, in the year 3000 BC. You are the king and each year you must decide how much of the city's store of grain will be given to the people as food, how much will be used for seed, and how much will be kept in storage.
 
