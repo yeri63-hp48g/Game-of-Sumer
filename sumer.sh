@@ -13,16 +13,16 @@
  
 # Initialize global variables.
  
-p=95            # Population
-s=2800          # Stored Bushels
+p=95        # Population
+s=2800      # Stored Bushels
 h=3000		    # Harvested Bushels
-e=200           # Bushels Eaten by rats.
-y=3		        # Yield; Trading Rate in Bushels per Acre.
+e=200       # Bushels Eaten by rats.
+y=3		       # Yield; Trading Rate in Bushels per Acre.
 a=1000		    # Acres of land.
-i=5		        # Immigrants to the city.
-q=1		        # User queried input.
-d=0		        # Deaths from starvation; Acres to plant.
-c=0             # Hamurabi's patience counter.
+i=5		       # Immigrants to the city.
+q=1		       # User queried input.
+d=0		       # Deaths from starvation; Acres to plant.
+c=0         # Hamurabi's patience counter.
 
 # ------- --------- --------- --------- --------- --------- --------- --------- --------- ---------
 
